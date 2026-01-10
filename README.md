@@ -84,4 +84,4 @@ Este proyecto es de código abierto.
 
 ## 👥 Autor
 
-Daniel - [GitHub](https://github.com/tu-usuario)
+Daniell - [GitHub](https://github.com/tu-usuario)
