@@ -6,9 +6,16 @@ Autor: D'Alessandro
 import cv2
 import numpy as np
 from pathlib import Path
-from typing import Tuple, List, Optional, Union
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
+from typing import Tuple, List, Optional
+
+# Importaciones opcionales
+try:
+    import albumentations as A
+    from albumentations.pytorch import ToTensorV2
+    ALBUMENTATIONS_AVAILABLE = True
+except ImportError:
+    ALBUMENTATIONS_AVAILABLE = False
+    print("Warning: albumentations no disponible. Algunas funciones avanzadas estarán deshabilitadas.")
 
 
 class ImagePreprocessor:
@@ -140,89 +147,75 @@ class ImagePreprocessor:
         return image
 
 
-class DataAugmentor:
-    """Clase para aplicar técnicas de data augmentation."""
-    
-    def __init__(self, image_size: Tuple[int, int] = (224, 224)):
-        """
-        Inicializa el augmentor de datos.
+# Clase DataAugmentor solo disponible si albumentations está instalado
+if ALBUMENTATIONS_AVAILABLE:
+    class DataAugmentor:
+        """Clase para aplicar técnicas de data augmentation."""
         
-        Args:
-            image_size: Tamaño de las imágenes (ancho, alto).
-        """
-        self.image_size = image_size
-        
-    def get_train_transforms(self) -> A.Compose:
-        """
-        Obtiene las transformaciones para el conjunto de entrenamiento.
-        
-        Returns:
-            Composición de transformaciones de Albumentations.
-        """
-        return A.Compose([
-            A.Resize(self.image_size[0], self.image_size[1]),
-            A.HorizontalFlip(p=0.5),
-            A.RandomBrightnessContrast(p=0.3),
-            A.Rotate(limit=15, p=0.5),
-            A.GaussNoise(var_limit=(10.0, 50.0), p=0.2),
-            A.RandomGamma(p=0.2),
-            A.Blur(blur_limit=3, p=0.2),
-            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ToTensorV2()
-        ])
-    
-    def get_validation_transforms(self) -> A.Compose:
-        """
-        Obtiene las transformaciones para el conjunto de validación.
-        
-        Returns:
-            Composición de transformaciones de Albumentations.
-        """
-        return A.Compose([
-            A.Resize(self.image_size[0], self.image_size[1]),
-            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-            ToTensorV2()
-        ])
-    
-    def apply_transforms(self, image: np.ndarray, transforms: A.Compose) -> np.ndarray:
-        """
-        Aplica transformaciones a una imagen.
-        
-        Args:
-            image: Imagen en formato numpy array.
-            transforms: Composición de transformaciones.
+        def __init__(self, image_size: Tuple[int, int] = (224, 224)):
+            """
+            Inicializa el augmentor de datos.
             
-        Returns:
-            Imagen transformada.
-        """
-        transformed = transforms(image=image)
-        return transformed['image']
+            Args:
+                image_size: Tamaño de las imágenes (ancho, alto).
+            """
+            self.image_size = image_size
+            
+        def get_train_transforms(self) -> A.Compose:
+            """
+            Obtiene las transformaciones para el conjunto de entrenamiento.
+            
+            Returns:
+                Composición de transformaciones de Albumentations.
+            """
+            return A.Compose([
+                A.Resize(self.image_size[0], self.image_size[1]),
+                A.HorizontalFlip(p=0.5),
+                A.RandomBrightnessContrast(p=0.3),
+                A.Rotate(limit=15, p=0.5),
+                A.GaussNoise(var_limit=(10.0, 50.0), p=0.2),
+                A.RandomGamma(p=0.2),
+                A.Blur(blur_limit=3, p=0.2),
+                A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                ToTensorV2()
+            ])
+        
+        def get_validation_transforms(self) -> A.Compose:
+            """
+            Obtiene las transformaciones para el conjunto de validación.
+            
+            Returns:
+                Composición de transformaciones de Albumentations.
+            """
+            return A.Compose([
+                A.Resize(self.image_size[0], self.image_size[1]),
+                A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                ToTensorV2()
+            ])
+        
+        def apply_transforms(self, image: np.ndarray, transforms: A.Compose) -> np.ndarray:
+            """
+            Aplica transformaciones a una imagen.
+            
+            Args:
+                image: Imagen en formato numpy array.
+                transforms: Composición de transformaciones.
+                
+            Returns:
+                Imagen transformada.
+            """
+            transformed = transforms(image=image)
+            return transformed['image']
+else:
+    # Clase dummy si albumentations no está disponible
+    class DataAugmentor:
+        """Clase stub cuando albumentations no está disponible."""
+        def __init__(self, image_size: Tuple[int, int] = (224, 224)):
+            self.image_size = image_size
+            print("DataAugmentor no disponible sin albumentations")
 
 
 # Funciones independientes para compatibilidad con el resto del proyecto
-
-def preprocess_frame(frame, target_size=(224, 224)):
-    """
-    Preprocesa un frame para alimentar al modelo CNN
-    
-    Args:
-        frame: Frame/imagen a preprocesar
-        target_size: Tamaño objetivo para redimensionar
-    
-    Returns:
-        Frame preprocesado
-    """
-    if frame is None:
-        return None
-    
-    # Redimensionar
-    resized = cv2.resize(frame, target_size, interpolation=cv2.INTER_AREA)
-    
-    # Normalizar a [0, 1]
-    normalized = resized.astype(np.float32) / 255.0
-    
-    return normalized
-
 
 def resize_frame(frame, width, height):
     """
@@ -449,3 +442,51 @@ def validate_image_quality(image_path: str, min_size: Tuple[int, int] = (100, 10
         return True
     except:
         return False
+
+
+# ============================================================================
+# FUNCIONES WRAPPER PARA STREAMLIT (Interfaz simplificada)
+# ============================================================================
+
+def preprocess_frame(frame, target_size=(224, 224)):
+    """
+    Función wrapper para preprocesar frames en Streamlit.
+    Simplifica el uso de la clase ImagePreprocessor para la UI.
+    
+    Args:
+        frame: Frame/imagen a preprocesar (numpy array)
+        target_size: Tamaño objetivo para redimensionar
+    
+    Returns:
+        Frame preprocesado y normalizado listo para el modelo
+    """
+    preprocessor = ImagePreprocessor(target_size=target_size)
+    
+    # Redimensionar
+    resized = preprocessor.resize_image(frame)
+    
+    # Normalizar
+    normalized = preprocessor.normalize_image(resized)
+    
+    return normalized
+
+
+def preprocess_image_for_display(image):
+    """
+    Preprocesa una imagen para mostrarla en Streamlit sin normalizar.
+    
+    Args:
+        image: Imagen a preprocesar
+    
+    Returns:
+        Imagen procesada para visualización
+    """
+    if image is None:
+        return None
+    
+    # Si es BGR, convertir a RGB
+    if len(image.shape) == 3 and image.shape[2] == 3:
+        return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    return image
+
