@@ -29,34 +29,38 @@ def load_model(model_path='models/modelo_seguridad_v1.h5'):
         print("3. Contacta a Igor para que verifique la arquitectura del modelo")
         return None
 
-def detect_objects(frame, model, threshold=0.6):
+def detect_objects(frame, model, threshold=0.5):
     """
-    Recibe un frame de la cámara, lo procesa con la lógica de D'Alessandro
-    y predice usando el modelo de Igor.
+    Detecta múltiples objetos en la imagen.
+    MODIFICADO: Ahora detecta TODAS las clases con confianza > threshold
+    para capturar escenarios como "persona + arma" en seguridad.
     """
     if model is None:
         return []
 
     # 1. Preprocesamiento (Estándar D'Alessandro 224x224)
-    # Suponiendo que su función devuelve la imagen normalizada
     input_frame = preprocess_frame(frame)
-    input_frame = np.expand_dims(input_frame, axis=0) # Ajustar para el modelo
+    input_frame = np.expand_dims(input_frame, axis=0)
 
     # 2. Predicción
     predictions = model.predict(input_frame, verbose=0)
     
-    # 3. Formatear resultados
-    # clases: 0: arma, 1: gorro, 2: mascara, 3: persona (el orden de las carpetas)
+    # 3. Formatear resultados - MULTI-LABEL
+    # clases: 0: arma, 1: gorro, 2: mascara, 3: persona
     clases = ['arma', 'gorro', 'mascara', 'persona']
-    idx = np.argmax(predictions[0])
-    probabilidad = predictions[0][idx]
-
+    
     results = []
-    if probabilidad > threshold:
-        results.append({
-            'label': clases[idx],
-            'confidence': probabilidad
-        })
+    
+    # Detectar TODAS las clases con confianza alta (no solo la máxima)
+    for idx, probabilidad in enumerate(predictions[0]):
+        if probabilidad > threshold:
+            results.append({
+                'label': clases[idx],
+                'confidence': float(probabilidad)
+            })
+    
+    # Ordenar por confianza descendente
+    results.sort(key=lambda x: x['confidence'], reverse=True)
     
     return results
 

@@ -42,7 +42,8 @@ def init_session_state():
         st.session_state.detection_history = []
     
     if 'confidence_threshold' not in st.session_state:
-        st.session_state.confidence_threshold = CONFIG.get('model', {}).get('threshold', 0.6)
+        # Threshold más bajo (0.3) para detectar múltiples objetos en seguridad
+        st.session_state.confidence_threshold = 0.3
     
     if 'risk_threshold' not in st.session_state:
         st.session_state.risk_threshold = CONFIG.get('security', {}).get('risk_threshold', 0.7)
