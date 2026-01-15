@@ -1,6 +1,7 @@
 # 🎯 Guía para Mejorar la Precisión del Modelo v4
 
 ## 📊 Estado Actual
+
 - **Accuracy validación**: 97.22% ✅
 - **Accuracy pruebas reales**: 83.33%
 - **Dataset**: 180 imágenes (60 arma, 30 gorro, 30 mascara, 60 persona)
@@ -11,13 +12,16 @@
 ## 🚀 Estrategias para Mejorar la Precisión
 
 ### 1. **Conseguir MÁS DATOS** (⭐ MÁS IMPORTANTE)
+
 La forma más efectiva de mejorar el modelo es aumentar el dataset:
 
 #### 🎯 Objetivo Recomendado:
+
 - **Mínimo**: 500 imágenes por clase (2,000 totales)
 - **Ideal**: 1,000+ imágenes por clase (4,000+ totales)
 
 #### 📸 Dónde conseguir datos:
+
 ```
 Opción 1: Descargar datasets públicos
 - Kaggle: https://www.kaggle.com/datasets
@@ -35,6 +39,7 @@ Opción 3: Data Augmentation automático
 ```
 
 #### 📁 Organización de nuevos datos:
+
 ```
 data/raw/
 ├── arma/         [añadir hasta 500+ imágenes]
@@ -77,6 +82,7 @@ LEARNING_RATE = 0.001     # Mantener o aumentar a 0.002
 Edita `entrenar_modelo_v4.py` (líneas 45-57):
 
 #### Aumentar diversidad:
+
 ```python
 train_datagen = ImageDataGenerator(
     rescale=1./255,
@@ -139,12 +145,14 @@ Para datasets pequeños, divide los datos en K partes y entrena K veces:
 ### 6. **Balancear las Clases**
 
 Actualmente:
+
 - arma: 60 (33%)
 - gorro: 30 (17%)
-- mascara: 30 (17%)  ⚠️ DESBALANCEADO
+- mascara: 30 (17%) ⚠️ DESBALANCEADO
 - persona: 60 (33%)
 
 #### Soluciones:
+
 ```python
 # Opción A: Class weights (en entrenar_modelo_v4.py)
 class_weights = {
@@ -169,6 +177,7 @@ history = model.fit(
 ## 📋 Plan de Acción Recomendado
 
 ### 🥇 **PRIORIDAD 1: Más datos para "mascara"**
+
 ```bash
 # 1. Descargar mínimo 200 imágenes de máscaras/mascarillas
 # 2. Guardar en data/raw/mascara/
@@ -176,6 +185,7 @@ history = model.fit(
 ```
 
 ### 🥈 **PRIORIDAD 2: Balancear dataset completo**
+
 ```bash
 # Conseguir imágenes hasta que cada clase tenga:
 # - Mínimo: 200 imágenes/clase (800 totales)
@@ -183,12 +193,14 @@ history = model.fit(
 ```
 
 ### 🥉 **PRIORIDAD 3: Re-entrenar con más datos**
+
 ```bash
 python entrenar_modelo_v4.py
 # Con más datos, la accuracy mejorará significativamente
 ```
 
 ### 🏅 **PRIORIDAD 4: Ajustar hiperparámetros**
+
 ```bash
 # Probar diferentes configuraciones:
 # - BATCH_SIZE: 8, 16, 32, 64
@@ -201,12 +213,14 @@ python entrenar_modelo_v4.py
 ## 📊 Monitoreo de Mejoras
 
 ### Métricas a observar:
+
 1. **Accuracy validación**: Debe ser >90%
 2. **Accuracy entrenamiento**: Debe ser similar a validación (±5%)
 3. **Confusion Matrix**: Ver qué clases se confunden
 4. **Per-class accuracy**: Cada clase debe tener >80%
 
 ### Script para analizar resultados:
+
 ```python
 # Crear analizar_resultados.py
 from sklearn.metrics import classification_report, confusion_matrix
@@ -221,13 +235,13 @@ import numpy as np
 
 ## 🎯 Expectativas Realistas
 
-| Dataset Size | Accuracy Esperada |
-|--------------|-------------------|
-| <200 imágenes totales | 60-75% |
-| 200-500 imágenes totales | 75-85% |
-| 500-1000 imágenes totales | 85-92% |
-| 1000-2000 imágenes totales | 92-96% |
-| >2000 imágenes totales | 95-99% |
+| Dataset Size               | Accuracy Esperada |
+| -------------------------- | ----------------- |
+| <200 imágenes totales      | 60-75%            |
+| 200-500 imágenes totales   | 75-85%            |
+| 500-1000 imágenes totales  | 85-92%            |
+| 1000-2000 imágenes totales | 92-96%            |
+| >2000 imágenes totales     | 95-99%            |
 
 **Estado actual**: 180 imágenes → 83.33% accuracy ✅ (dentro de lo esperado)
 
@@ -267,12 +281,14 @@ import numpy as np
 ## 📞 Recursos Útiles
 
 ### Datasets recomendados:
+
 - **Armas**: Buscar "gun detection dataset" en Kaggle
 - **Gorros/Cascos**: "helmet detection dataset", "PPE detection"
 - **Máscaras**: "face mask detection dataset" (COVID-19)
 - **Personas**: "person detection dataset", "COCO dataset"
 
 ### Herramientas:
+
 - **Label Studio**: Para etiquetar imágenes propias
 - **Roboflow**: Para procesamiento de datasets
 - **Albumentations**: Augmentation avanzado (ya opcional en el código)
