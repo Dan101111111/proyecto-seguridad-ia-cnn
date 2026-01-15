@@ -27,12 +27,14 @@ Sistema de vigilancia automatizada que analiza imágenes y video para identifica
 ## 📦 Instalación
 
 1. Clonar el repositorio:
+
 ```bash
 git clone https://github.com/tu-usuario/proyecto-seguridad-ia-cnn.git
 cd proyecto-seguridad-ia-cnn
 ```
 
 2. Crear entorno virtual:
+
 ```bash
 python -m venv venv
 venv\Scripts\activate  # Windows
@@ -40,6 +42,7 @@ venv\Scripts\activate  # Windows
 ```
 
 3. Instalar dependencias:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -47,6 +50,7 @@ pip install -r requirements.txt
 ## 🎯 Uso
 
 Ejecutar la aplicación:
+
 ```bash
 streamlit run ui/app.py
 ```
@@ -74,6 +78,7 @@ La aplicación se abrirá en `http://localhost:8501`
 ## 🔧 Configuración
 
 Ajustar parámetros en la barra lateral de la aplicación:
+
 - Umbral de confianza de detección
 - Nivel de riesgo de seguridad
 - Modelo CNN a utilizar

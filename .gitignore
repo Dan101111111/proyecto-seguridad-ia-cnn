@@ -213,7 +213,7 @@ models/*.pth
 models/*.pt
 models/*.onnx
 models/*.pb
-data/raw/
+#data/raw/
 data/processed/
 data/*.csv
 data/*.json
@@ -244,3 +244,8 @@ tmp/
 *.gif
 !ui/assets/*.png
 !ui/assets/*.jpg
+
+# Allow dataset for CNN project
+!data/
+!data/raw/
+!data/raw/**

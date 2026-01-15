@@ -14,5 +14,6 @@ data/
 ```
 
 ## Notas:
+
 - Los archivos de datos grandes no se suben al repositorio (ver .gitignore)
 - Agregar aquí tus datasets de imágenes para entrenamiento
