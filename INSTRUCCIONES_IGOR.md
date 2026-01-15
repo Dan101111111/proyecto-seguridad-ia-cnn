@@ -35,6 +35,7 @@ python test_modelo_v2.py
 ```
 
 **Resultado esperado:**
+
 - ✅ Modelo carga sin errores (arquitectura OK)
 - ⚠️ Accuracy ~25% (modelo sin entrenar)
 
