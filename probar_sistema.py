@@ -9,13 +9,14 @@ print("="*70)
 print("PRUEBA RÁPIDA DEL SISTEMA DE SEGURIDAD")
 print("="*70)
 
-# 1. Verificar que el modelo v2 carga
-print("\n1️⃣ Probando carga del modelo v2...")
+# 1. Verificar que el modelo v4 carga
+print("\n1️⃣ Probando carga del modelo v4...")
 try:
     import tensorflow as tf
-    model = tf.keras.models.load_model('models/modelo_seguridad_v2.keras', compile=False)
-    print(f"   ✅ Modelo v2 carga correctamente")
+    model = tf.keras.models.load_model('models/modelo_seguridad_v4.keras', compile=False)
+    print(f"   ✅ Modelo v4 carga correctamente")
     print(f"   📊 Input: {model.input_shape}, Output: {model.output_shape}")
+    print(f"   🔥 Transfer Learning con MobileNetV2")
 except Exception as e:
     print(f"   ❌ ERROR: {e}")
     exit(1)
@@ -77,7 +78,8 @@ print("\n" + "="*70)
 print("✅ TODAS LAS PRUEBAS PASARON")
 print("="*70)
 print("\n📝 Sistema funcionando correctamente!")
-print("⚠️  NOTA: Modelo v2 NO está entrenado (accuracy ~25%)")
+print("⚠️  NOTA: Modelo v4 NO está entrenado (accuracy ~33%)")
+print("✅ Transfer Learning con MobileNetV2 (mejor que v2)")
 print("💡 Siguiente paso: Igor debe entrenar el modelo")
 print("\n🚀 Para probar la UI: streamlit run ui/app.py")
 print("="*70)

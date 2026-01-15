@@ -1,6 +1,6 @@
 {
   "model": {
-    "path": "models/modelo_seguridad_v2.keras",
+    "path": "models/modelo_seguridad_v4.keras",
     "input_size": [224, 224],
     "classes": ["arma", "gorro", "mascara", "persona"],
     "threshold": 0.6
