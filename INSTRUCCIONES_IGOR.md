@@ -1,16 +1,42 @@
-# 🎯 Instrucciones para Igor - Modelo de Seguridad v2
+# 🎯 Instrucciones para Igor - Modelo de Seguridad
 
 **Fecha:** 15 de enero de 2026  
 **Responsable:** Igor (AI/CNN Model)  
-**Estado:** 🟡 Modelo v2 funcional pero sin entrenar
+**Estado:** 🔴 CRÍTICO - Modelo v3 tiene el mismo error que v1 y v2
 
 ---
 
-## 📊 Resumen de la Situación
+## 🚨 PROBLEMA DETECTADO CON MODELO v3
 
-El modelo v2 que subiste tenía un error de arquitectura (mismo problema que v1). Daniel ya creó un modelo v2 **FUNCIONAL** con la arquitectura correcta, pero este modelo **NO está entrenado** y tiene accuracy ~25% (predicción aleatoria).
+Igor, el `modelo_seguridad_v3.h5` y `.keras` que subiste **NO funciona**. Tiene el mismo error de arquitectura:
 
-**Tu tarea:** Entrenar el modelo con las imágenes de `data/raw/`
+```
+ValueError: Layer "dense_6" expects 1 input(s), but it received 2 input tensors.
+```
+
+**Este es el MISMO error que tenían v1 y v2 originales.**
+
+## 📊 Solución
+
+**Debes usar el modelo v2 que Daniel creó** (arquitectura correcta) y **ENTRENARLO** con tus datos.
+
+**NO crear un modelo v3 nuevo.** Usa `modelo_seguridad_v2.keras` como base.
+
+---
+
+## ✅ Paso 1: Verificar el Modelo v2 (Arquitectura Correcta)
+
+```bash
+# Activar entorno virtual
+.venv\Scripts\Activate.ps1
+
+# Ejecutar pruebas
+python test_modelo_v2.py
+```
+
+**Resultado esperado:**
+- ✅ Modelo carga sin errores (arquitectura OK)
+- ⚠️ Accuracy ~25% (modelo sin entrenar)
 
 ---
 
