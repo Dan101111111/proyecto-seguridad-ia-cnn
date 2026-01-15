@@ -27,6 +27,7 @@ python test_modelo_v2.py
 ```
 
 **Resultado esperado:**
+
 - ✅ Modelo carga sin errores
 - ⚠️ Accuracy ~25% (modelo sin entrenar)
 
@@ -147,6 +148,7 @@ python test_modelo_v2.py
 ```
 
 **Resultado esperado:**
+
 - ✅ Accuracy > 60% (mínimo aceptable)
 - ✅ Accuracy > 80% (ideal para producción)
 
@@ -163,7 +165,6 @@ Abre http://localhost:8502 y prueba:
 1. **Detección en Imagen:**
    - Sube `data/raw/arma/arma_001.jpg`
    - Verifica que detecta "arma" con > 60% confianza
-   
 2. **Probar otras clases:**
    - Gorro: `data/raw/gorro/casco_001.jpg`
    - Máscara: `data/raw/mascara/mask_001.jpg`
@@ -198,11 +199,13 @@ git push origin igor/cnn-model
 ## 📊 Métricas de Éxito
 
 ### Mínimo aceptable:
+
 - ✅ Modelo carga sin errores
 - ✅ Accuracy > 60%
 - ✅ Detecciones coherentes en UI
 
 ### Ideal:
+
 - ✅ Accuracy > 80%
 - ✅ Confianza promedio > 70%
 - ✅ Todas las clases balanceadas
@@ -212,20 +215,24 @@ git push origin igor/cnn-model
 ## 🐛 Solución de Problemas
 
 ### Error: "No module named 'tensorflow'"
+
 ```bash
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
 ### Warning: "albumentations no disponible"
+
 - ⚠️ Normal, no afecta el entrenamiento básico
 - Opcional: `pip install albumentations`
 
 ### Entrenamiento muy lento
+
 - Reduce EPOCHS a 30
 - Aumenta BATCH_SIZE a 64 (si tienes RAM suficiente)
 
 ### Accuracy muy baja (<50%)
+
 - Aumenta EPOCHS a 100
 - Verifica que las imágenes son de buena calidad
 - Revisa que las carpetas en `data/raw/` están correctas
@@ -243,6 +250,7 @@ data/raw/
 ```
 
 Total: 180 imágenes
+
 - 80% entrenamiento = 144 imágenes
 - 20% validación = 36 imágenes
 
@@ -264,6 +272,7 @@ Luego entrena ese modelo en lugar del simple.
 ## 📞 Ayuda
 
 Si tienes problemas:
+
 - **Daniel** - Integración y UI
 - **D'Alessandro** - Preprocesamiento
 - **Bruno** - Testing
