@@ -1,0 +1,37 @@
+{
+  "model": {
+    "path": "models/modelo_seguridad_v2.keras",
+    "input_size": [224, 224],
+    "classes": ["arma", "gorro", "mascara", "persona"],
+    "threshold": 0.6
+  },
+  "security": {
+    "risk_threshold": 0.7,
+    "suspicious_objects": ["arma", "weapon", "knife", "gun", "mascara", "gorro"],
+    "alert_levels": {
+      "bajo": 0.3,
+      "medio": 0.5,
+      "alto": 0.7,
+      "critico": 0.9
+    }
+  },
+  "preprocessing": {
+    "target_size": [224, 224],
+    "normalize": true,
+    "remove_noise": false,
+    "kernel_size": 5
+  },
+  "ui": {
+    "title": "Sistema de Detección de Seguridad",
+    "icon": "🔒",
+    "layout": "wide",
+    "max_upload_size": 200,
+    "save_detections": true,
+    "output_dir": "results/detections"
+  },
+  "logging": {
+    "level": "INFO",
+    "dir": "logs",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  }
+}
