@@ -2,7 +2,13 @@
 
 Sistema de detección de objetos sospechosos (armas, máscaras, gorros) usando Deep Learning con validación inteligente anti-falsos positivos.
 
+## 🌐 Demo en Línea
+
+🔗 **Prueba la app en vivo**: [Próximamente en Streamlit Cloud]
+
 ## 🚀 Inicio Rápido
+
+### Opción 1: Ejecutar Localmente
 
 ```bash
 # 1. Activar entorno virtual
@@ -13,6 +19,10 @@ streamlit run app.py
 ```
 
 La aplicación se abrirá automáticamente en: **http://localhost:8501**
+
+### Opción 2: Desplegar en Streamlit Cloud
+
+Ver instrucciones completas en [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## 📋 Requisitos
 
