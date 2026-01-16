@@ -207,16 +207,10 @@ marimo/_lsp/
 __marimo__/
 
 # Project specific
-# Models and datasets
-models/*.h5
-models/*.pth
-models/*.pt
-models/*.onnx
-models/*.pb
-#data/raw/
+# Datasets (imágenes de entrenamiento - muy pesadas)
+data/raw/
 data/processed/
 data/*.csv
-data/*.json
 
 # Output files
 outputs/
@@ -224,28 +218,17 @@ results/
 logs/
 *.log
 
-# Config files
-config.json
-config.yaml
-.env.local
-
 # Temporary files
 temp/
 tmp/
 *.tmp
 
-# Video and image files
+# Video and image files (generales)
 *.mp4
 *.avi
 *.mov
-*.jpg
-*.jpeg
-*.png
-*.gif
+
+# Mantener assets de UI
 !ui/assets/*.png
 !ui/assets/*.jpg
-
-# Allow dataset for CNN project
-!data/
-!data/raw/
-!data/raw/**
+!ui/assets/*.gif
