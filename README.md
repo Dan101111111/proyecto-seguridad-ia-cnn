@@ -1,92 +1,153 @@
-# 🔒 Sistema de Detección de Seguridad con CNN
+﻿# 🔒 Sistema de Detección de Seguridad - CNN
 
-Aplicación de seguridad inteligente que detecta objetos sospechosos en tiempo real utilizando redes neuronales convolucionales (CNN).
+Sistema de detección de objetos sospechosos (armas, máscaras, gorros) usando Deep Learning con validación inteligente anti-falsos positivos.
 
-## 📋 Descripción
-
-Sistema de vigilancia automatizada que analiza imágenes y video para identificar objetos potencialmente peligrosos o sospechosos, generando alertas en tiempo real basadas en análisis de riesgo.
-
-## 🚀 Características
-
-- Detección de objetos en tiempo real usando CNN
-- Análisis de riesgo de seguridad automatizado
-- Interfaz web intuitiva con Streamlit
-- Soporte para imágenes estáticas y video en vivo
-- Registro de eventos de seguridad
-- Sistema de alertas configurable
-
-## 🛠️ Tecnologías
-
-- **Python 3.8+**
-- **TensorFlow/Keras** - Framework de Deep Learning
-- **PyTorch** - Framework alternativo de DL
-- **OpenCV** - Procesamiento de visión computacional
-- **Streamlit** - Interfaz web interactiva
-- **NumPy/Pandas** - Procesamiento de datos
-
-## 📦 Instalación
-
-1. Clonar el repositorio:
+## 🚀 Inicio Rápido
 
 ```bash
-git clone https://github.com/tu-usuario/proyecto-seguridad-ia-cnn.git
-cd proyecto-seguridad-ia-cnn
+# 1. Activar entorno virtual
+.venv\Scripts\activate
+
+# 2. Ejecutar aplicación
+streamlit run app.py
 ```
 
-2. Crear entorno virtual:
+La aplicación se abrirá automáticamente en: **http://localhost:8501**
+
+## 📋 Requisitos
+
+- Python 3.8+
+- Dependencias en `requirements.txt`
+
+### Instalación
 
 ```bash
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux/Mac
-```
+# Crear entorno virtual
+python -m venv .venv
 
-3. Instalar dependencias:
+# Activar entorno
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # Linux/Mac
 
-```bash
+# Instalar dependencias
 pip install -r requirements.txt
 ```
 
-## 🎯 Uso
+## ✨ Características
 
-Ejecutar la aplicación:
+### 🎯 Validación Inteligente
 
-```bash
-streamlit run ui/app.py
+Sistema con 4 filtros anti-falsos positivos:
+
+- ✅ Detecta armas reales correctamente
+- ✅ NO genera falsos positivos en gestos de manos
+- ✅ Análisis regional para detectar armas en manos
+- ✅ Balance óptimo entre sensibilidad y precisión
+
+### 📸 Modos de Detección
+
+1. **Imagen**: Sube imágenes para análisis
+2. **Video**: Procesa archivos de video
+3. **Webcam**: Detección en tiempo real (hasta 30 FPS)
+
+### 🔍 Clases Detectables
+
+- Arma (pistolas, rifles, escopetas)
+- Gorro
+- Máscara
+- Persona
+
+## ⚙️ Configuración
+
+### Thresholds Actuales
+
+```python
+Threshold arma global:    15%  # Sensible para pistolas
+Threshold arma regional:  25%  # Balance detección/FP
+Análisis regional:        ✓ ACTIVADO (3 regiones)
+Validación inteligente:   ✓ ACTIVADA (4 filtros)
 ```
 
-La aplicación se abrirá en `http://localhost:8501`
+### Ajustar Sensibilidad
+
+Para modificar la sensibilidad, edita [src/detector.py](src/detector.py) línea ~51:
+
+**Más sensible** (detecta más):
+
+```python
+'arma': 0.12,  # Bajar threshold
+```
+
+**Más estricto** (menos falsos positivos):
+
+```python
+'arma': 0.20,  # Subir threshold
+```
 
 ## 📁 Estructura del Proyecto
 
 ```
-├── data/              # Datasets y datos de entrenamiento
-├── models/            # Modelos CNN entrenados
-├── src/               # Código fuente principal
-│   ├── detector.py    # Módulo de detección
-│   ├── preprocessing.py  # Preprocesamiento de imágenes
-│   ├── logic.py       # Lógica de seguridad
-│   └── utils.py       # Utilidades generales
-├── ui/                # Interfaz de usuario
-│   ├── app.py         # Aplicación Streamlit
-│   └── assets/        # Recursos estáticos
-├── tests/             # Pruebas unitarias
-├── requirements.txt   # Dependencias
-└── README.md          # Documentación
+proyecto-seguridad-ia-cnn/
+│
+├── app.py                          # Aplicación principal Streamlit
+├── requirements.txt                # Dependencias
+├── config.json                     # Configuración
+│
+├── src/                            # Código fuente
+│   ├── detector.py                 # Motor de detección con validación
+│   ├── preprocessing.py            # Preprocesamiento de imágenes
+│   ├── logic.py                    # Lógica de análisis de riesgo
+│   └── utils.py                    # Utilidades
+│
+├── models/                         # Modelos entrenados
+│   └── modelo_seguridad_v4.keras   # CNN (93% accuracy)
+│
+└── data/                           # Datasets
+    └── raw/                        # Imágenes por clase
 ```
 
-## 🔧 Configuración
+## 🧪 Pruebas
 
-Ajustar parámetros en la barra lateral de la aplicación:
+El proyecto incluye una suite completa de tests para validar el funcionamiento:
 
-- Umbral de confianza de detección
-- Nivel de riesgo de seguridad
-- Modelo CNN a utilizar
+```bash
+# Activar entorno virtual
+.venv\Scripts\activate
 
-## 📝 Licencia
+# Probar el modelo CNN
+python tests/test_modelo.py
 
-Este proyecto es de código abierto.
+# Probar la lógica de seguridad
+python tests/test_logic.py
+```
 
-## 👥 Autor
+Ver más detalles en [tests/README.md](tests/README.md)
 
-Daniel - [GitHub](https://github.com/tu-usuario)
+## 🎓 Modelo
+
+**Versión**: v4.keras
+**Arquitectura**: Transfer Learning con MobileNetV2
+**Precisión**: 93.26% validación, 91.67% test
+**Dataset**: 14,696 imágenes (arma, gorro, máscara, persona)
+
+### Nota sobre Pistolas
+
+El modelo fue entrenado principalmente con rifles y escopetas. Para pistolas pequeñas:
+
+- **Actual**: Threshold optimizado a 15%
+- **Futuro**: Re-entrenar con más imágenes de pistolas
+
+## 🛡️ Sistema de Validación
+
+Filtros anti-falsos positivos:
+
+1. **Filtro 1**: Global < 5% + 1 región → RECHAZAR
+2. **Filtro 2**: Global < 5% + 2 regiones débiles → RECHAZAR
+3. **Filtro 3**: Global < 10% + 1 región débil → RECHAZAR
+4. **Filtro 4**: Global ≥ 10% O múltiples regiones → VALIDAR
+
+Esto permite detectar personas armadas (guardias, agentes) sin generar alertas falsas por gestos de manos.
+
+## 📞 Soporte
+
+Para problemas o preguntas, consulta la documentación en el código o contacta al equipo de desarrollo.
