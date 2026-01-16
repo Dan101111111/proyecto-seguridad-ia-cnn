@@ -1,5 +1,5 @@
 # Deep Learning Frameworks
-tensorflow>=2.13.0
+tensorflow==2.17.1
 
 # Computer Vision
 opencv-python-headless>=4.8.0
